@@ -9,6 +9,7 @@
   "author": "elsehow",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "merge-stream": "^1.0.0",
     "minimist": "^1.2.0",
     "replacestream": "^4.0.0"
   }
