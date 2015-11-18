@@ -1,0 +1,15 @@
+{
+  "name": "bundledown",
+  "version": "1.0.0",
+  "description": "includes for bundling markdown",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "elsehow",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "replacestream": "^4.0.0"
+  }
+}
