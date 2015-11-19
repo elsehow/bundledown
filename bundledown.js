@@ -4,10 +4,10 @@
 // TODO should work with e.g. '../../file.md'
 
 var fs            = require('fs')
-  , path          = require('path')
-  , argv          = require('minimist')(process.argv.slice(2))
-  , replaceStream = require('replacestream')
-  , includeRegex  = /@include\('.+'\)/g
+, path          = require('path')
+, argv          = require('minimist')(process.argv.slice(2))
+, replaceStream = require('replacestream')
+, includeRegex  = /@include\('.+'\)/g
 
 function baseDirOf (p) {
   return path.dirname(p)
@@ -42,8 +42,8 @@ function bundledown (instream, outstream, baseDir) {
     function absPath (relativePath) {
       // remove leading '.' ('./my-path' becomes '/my-path')
       var p = relativePath.slice(1)
-      // join to the base dir
-      return path.join(baseDir, p)
+        // join to the base dir
+        return path.join(baseDir, p)
     }
     // return the absolute filepath from the includ estatement 
     return absPath(relPath(includeStatement))
@@ -52,20 +52,16 @@ function bundledown (instream, outstream, baseDir) {
   // this is run everytime we find an include statement
   function replaceFn (includeStatement) {
     var absPath = getFilePath(includeStatement, baseDir)
-    // call bundledown recursively on this path
-    instream.pause()
     bundledown(read(absPath), outstream, baseDirOf(absPath))
-    instream.resume()
+    return ''
   }
-
+ 
   var rs = replaceStream(includeRegex, replaceFn)
-
   instream.pipe(rs).pipe(outstream)
-}
 
+}
 
 // usage: `bundledown my-file.md -o bundle.md`
 var input   = argv._[0]
 var output  = argv.o ? write(argv.o) : process.stdout
-// recursively bundle the input file
 bundledown(read(input), output, baseDirOf(input))
