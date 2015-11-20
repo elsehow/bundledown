@@ -3,11 +3,12 @@
 // TODO test with absolute paths
 // TODO should work with e.g. '../../file.md'
 
-var fs            = require('fs')
+var fs          = require('fs')
 , path          = require('path')
 , argv          = require('minimist')(process.argv.slice(2))
-, through       = require('through')
-//, replaceStream = require('replacestream')
+, through       = require('through2')
+, split         = require('split')
+, duplexer      = require('duplexer2')
 , includeRegex  = /@include\('.+'\)/g
 
 function startsWith (str1, str2) {
@@ -56,44 +57,37 @@ function getFilePath (inclStatement, baseDir) {
     , baseDir)
 }
 
-function recursivelyParseBuffer (buffer, baseDirectory, thru) {
+function recursivelyParseBuffer (baseDirectory) {
 
-  function recurse (splitText1, includeStatement, splitText2) {
-
-    // part of the buffer that comes before include statement
-    // push it to the main buffer
-    thru.queue(new Buffer(splitText1))
-
-    // include statement itself -
-    // open the file it references,
-    // and run each chunk of that through the same routine,
-    // each time referring to our parent buffer here
+  function recurse (includeStatement) {
     var p       = getFilePath(includeStatement, baseDirectory)
     var base    = baseDirOf(p)
-
-    read(p)
-      .pipe(through(function (b, _, newNext) {
-        //console.log('hiiii', b.toString())
-        recursivelyParseBuffer(b, base, thru)//, next)
-        //newNext()
-      }, function () {
-        // part of buffer that comes after include statement
-        thru.queue(new Buffer(splitText2))
-      }))
-
+    return read(p)
+      .pipe(split())
+      .pipe(recursivelyParseBuffer(base))
   }
 
-  var text      = buffer.toString()
-  //console.log('hi', text)
-  var pieces    = text.split(includeRegex)
-  var matches   = text.match(includeRegex)
-  if (matches) {
-    recurse(pieces[0], matches[0], pieces[1])
-  }
-  else
-    thru.queue(buffer)
+  var input  = through()
+  var output = through()
+  input
+    .pipe(through(function (buff, _, next) {
+      var line    = buff.toString()
+      var matches = line.match(includeRegex)
+      if (matches) {
+        var r = recurse(matches[0])
+        r.pipe(output, {end: false})
+        r.on('end', next)
+      }
+      else {
+        output.write(buff+'\n\n')
+        next()
+      }
+    }
+    , function () {
+      output.end()
+    }))
 
-  //next()
+  return duplexer(input, output)
 }
 
 // usage: `bundledown my-file.md -o bundle.md`
@@ -101,8 +95,6 @@ var infile    = argv._[0]
 var outstream = argv.o ? write(argv.o) : process.stdout
 
 read(infile)
-  .pipe(through(function (buff, _, next) {
-    recursivelyParseBuffer(buff, baseDirOf(infile), this)
-  }, function (cb) {
-    //do nothin
-  })).pipe(outstream)
+  .pipe(split())
+  .pipe(recursivelyParseBuffer(baseDirOf(infile)))
+  .pipe(outstream)

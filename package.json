@@ -9,9 +9,13 @@
   "author": "elsehow",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "duplexer": "^0.1.1",
+    "duplexer2": "^0.1.4",
     "merge-stream": "^1.0.0",
     "minimist": "^1.2.0",
     "replacestream": "^4.0.0",
+    "split": "^1.0.0",
+    "stream-combiner2": "^1.1.1",
     "through": "^2.3.8",
     "through2": "^2.0.0"
   }
