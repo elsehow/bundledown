@@ -65,14 +65,21 @@ function recursivelyParseBuffer (baseDirectory) {
       .pipe(recursivelyParseBuffer(base))
   }
 
+  function findInclude (buff) {
+    var line    = buff.toString()
+    var matches = line.match(includeRegex)
+    if (matches)
+      return matches[0]
+    return
+  }
+
   var input  = through()
   var output = through()
   input
     .pipe(through(function (buff, _, next) {
-      var line    = buff.toString()
-      var matches = line.match(includeRegex)
-      if (matches) {
-        var r = recurse(matches[0])
+      var include = findInclude(buff)
+      if (include) {
+        var r = recurse(include)
         r.pipe(output, {end: false})
         r.on('end', next)
       }
@@ -80,8 +87,7 @@ function recursivelyParseBuffer (baseDirectory) {
         output.write(buff+'\n\n')
         next()
       }
-    }
-    , function () {
+    }, function () {
       output.end()
     }))
 
