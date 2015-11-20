@@ -1,6 +1,6 @@
 {
   "name": "bundledown",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "includes for bundling markdown",
   "main": "index.js",
   "scripts": {
@@ -9,14 +9,26 @@
   "author": "elsehow",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "duplexer": "^0.1.1",
     "duplexer2": "^0.1.4",
-    "merge-stream": "^1.0.0",
     "minimist": "^1.2.0",
-    "replacestream": "^4.0.0",
     "split": "^1.0.0",
     "stream-combiner2": "^1.1.1",
-    "through": "^2.3.8",
     "through2": "^2.0.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elsehow/bundledown.git"
+  },
+  "keywords": [
+    "markdown",
+    "bundle"
+  ],
+  "bugs": {
+    "url": "https://github.com/elsehow/bundledown/issues"
+  },
+  "homepage": "https://github.com/elsehow/bundledown#readme"
 }
