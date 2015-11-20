@@ -18,19 +18,15 @@ function baseDirOf (p) {
   return path.dirname(p)
 }
 
-function pathTo (f) {
-  return f
-}
-
 function read (f) {
   if (startsWith(f, '/'))
     return fs.createReadStream(f)
   else
-    return fs.createReadStream(pathTo(f))
+    return fs.createReadStream(f)
 }
 
 function write (f) {
-  return fs.createWriteStream(pathTo(f))
+  return fs.createWriteStream(f)
 }
 
 // return absolute filepath from include statement, given a root directory
