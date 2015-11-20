@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-// TODO test with absolute paths
 // TODO should work with e.g. '../../file.md'
 
 var fs          = require('fs')
@@ -24,7 +23,10 @@ function pathTo (f) {
 }
 
 function read (f) {
-  return fs.createReadStream(pathTo(f))
+  if (startsWith(f, '/'))
+    return fs.createReadStream(f)
+  else
+    return fs.createReadStream(pathTo(f))
 }
 
 function write (f) {

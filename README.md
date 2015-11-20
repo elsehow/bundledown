@@ -1,8 +1,6 @@
 # bundledown
 
-include files in markdown c:
-
-**NOTE**: this is a work in progress. PRs v welcome (:
+include files in markdown!!!!!!
 
 ## installation
 
@@ -28,3 +26,6 @@ now just
 
     bundledown index.md -o bundle.md
 
+## license
+
+BSD-2-Clause
