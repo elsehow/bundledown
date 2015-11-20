@@ -19,7 +19,7 @@ function baseDirOf (p) {
 }
 
 function pathTo (f) {
-  return path.join(__dirname, f)
+  return f
 }
 
 function read (f) {
