@@ -1,6 +1,6 @@
 {
   "name": "bundledown",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "includes for bundling markdown",
   "main": "index.js",
   "bin": {
