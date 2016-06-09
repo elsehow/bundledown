@@ -1,6 +1,6 @@
 # bundledown
 
-include files in markdown!!!!!!
+recursively bundle arbitrary files!!!!
 
 ## installation
 
@@ -25,7 +25,23 @@ nice
 now just
 
     bundledown index.md -o bundle.md
+    
+or, in js,
+
+```js
+var bundledown = require('bundledown')
+var filePath = require('path').join(__dirname, 'myfile.md')
+var readStream = require('fs').createReadStream(filePath)
+
+bundledown(readStream).pipe(process.stdout)
+```
+
+## api
+
+### bundledown(path)
+
+recursively bundles the file at path. returns a stream.
 
 ## license
 
-BSD-2-Clause
+BSD

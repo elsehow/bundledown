@@ -1,12 +1,13 @@
 {
   "name": "bundledown",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "includes for bundling markdown",
   "main": "index.js",
   "bin": {
     "bundledown": "bundledown.js"
   },
   "scripts": {
+    "watch": "runwatch \"**/**.js\" -r \"npm test\"",
     "test": "npm run gen-advanced-test && npm run gen-simple-test && node test/test.js",
     "gen-advanced-test": "./bundledown.js test/advanced/index.md -o test/advanced/bundle.md",
     "gen-simple-test": "./bundledown.js test/simple/index.md -o test/simple/bundle.md"
@@ -24,6 +25,8 @@
     "test": "test"
   },
   "devDependencies": {
+    "concat-stream": "^1.5.1",
+    "runwatch": "^0.1.3",
     "tape": "^4.2.2"
   },
   "repository": {
